@@ -10,17 +10,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --mist:#F7F3EB;
-    --mist-2:#EFE7D8;
-    --cream:#FCFAF5;
-    --ink:#403A31;
-    --ink-soft:#837767;
-    --clay:#A6754F;
-    --sage:#94A182;
-    --sage-deep:#57604B;
-    --blossom:#E8A9B8;
-    --blossom-2:#F2C4CE;
-    --line:rgba(64,58,49,.10);
+    /* 🌙 palette luna: celeste, blu, verde notte */
+    --mist:#EEF4F4;
+    --mist-2:#DCE9E8;
+    --frost:#F6FAFA;
+    --ink:#2C3A40;
+    --ink-soft:#5E767C;
+    --moon:#6E93AD;         /* blu lunare */
+    --moon-deep:#3F6178;    /* blu profondo */
+    --celeste:#A7C8D6;
+    --green:#84AC98;        /* verde giardino notturno */
+    --glow:#BFD9E1;         /* riflesso chiaro */
+    --line:rgba(44,58,64,.10);
     --serif:'Cormorant Garamond', Georgia, serif;
     --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
@@ -28,39 +29,42 @@
   html,body{height:100%;}
   body{
     font-family:var(--sans);color:var(--ink);font-weight:300;line-height:1.6;
-    background:radial-gradient(130% 90% at 20% -15%, var(--cream) 0%, var(--mist) 50%, var(--mist-2) 100%) fixed;
+    background:radial-gradient(130% 90% at 20% -15%, var(--frost) 0%, var(--mist) 48%, var(--mist-2) 100%) fixed;
     -webkit-font-smoothing:antialiased;overflow:hidden;
   }
 
-  /* ═══════════════ CILIEGIO (foto, effetto soffuso) ═══════════════ */
+  /* ═══════════════ CILIEGIO (tinta lunare, soffuso) ═══════════════ */
   .tree-photo{
     position:fixed;right:-6vw;bottom:-4vh;height:96vh;z-index:0;
     pointer-events:none;user-select:none;
-    opacity:.5;filter:blur(2.5px) saturate(.9);
+    opacity:.42;
+    filter:blur(2.5px) saturate(.7) hue-rotate(175deg) brightness(1.05);
     -webkit-mask-image:radial-gradient(75% 75% at 55% 45%, #000 55%, transparent 100%);
     mask-image:radial-gradient(75% 75% at 55% 45%, #000 55%, transparent 100%);
     transform-origin:bottom center;
     animation:tree-sway 10s ease-in-out infinite alternate;
   }
   @keyframes tree-sway{from{transform:rotate(-.5deg);}to{transform:rotate(.6deg);}}
-  /* fallback disegnato, appare solo se manca ciliegio.png */
   .tree-svg{
     position:fixed;right:-60px;bottom:-30px;height:88vh;z-index:0;
-    pointer-events:none;opacity:.6;display:none;
+    pointer-events:none;opacity:.5;display:none;
     transform-origin:bottom center;animation:tree-sway 10s ease-in-out infinite alternate;
   }
 
-  /* ═══════════════ PETALI ═══════════════ */
-  #petals{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;}
-  .petal{position:absolute;top:-6vh;opacity:0;animation:fall linear infinite, sway ease-in-out infinite alternate;}
-  .petal svg{width:100%;height:100%;display:block;filter:drop-shadow(0 1px 1px rgba(64,58,49,.10));}
+  /* ═══════════════ SIMBOLI CELESTI CHE CADONO ═══════════════ */
+  #sky{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;}
+  .glyph{
+    position:absolute;top:-6vh;opacity:0;line-height:1;
+    color:var(--moon);text-shadow:0 0 10px rgba(167,200,214,.6);
+    animation:fall linear infinite, twinkle ease-in-out infinite;
+  }
   @keyframes fall{
     0%{transform:translateY(-6vh) rotate(0deg);opacity:0;}
-    6%{opacity:.9;}
-    85%{opacity:.8;}
-    100%{transform:translateY(108vh) rotate(320deg);opacity:0;}
+    8%{opacity:.85;}
+    86%{opacity:.7;}
+    100%{transform:translateY(108vh) rotate(190deg);opacity:0;}
   }
-  @keyframes sway{from{margin-left:-34px;}to{margin-left:34px;}}
+  @keyframes twinkle{0%,100%{filter:brightness(1);}50%{filter:brightness(1.5);}}
 
   /* ═══════════════ APP SHELL ═══════════════ */
   .app{
@@ -69,24 +73,24 @@
     max-width:1240px;margin:0 auto;padding:28px;gap:26px;
   }
   aside{
-    background:rgba(252,250,245,.68);backdrop-filter:blur(14px);
+    background:rgba(246,250,250,.7);backdrop-filter:blur(14px);
     border:1px solid var(--line);border-radius:26px;
     padding:36px 26px 26px;display:flex;flex-direction:column;align-items:center;text-align:center;
-    box-shadow:0 14px 40px rgba(64,58,49,.08);
+    box-shadow:0 14px 40px rgba(44,58,64,.08);
   }
   .enso-wrap{position:relative;width:130px;height:130px;margin-bottom:18px;}
   .enso{position:absolute;inset:-26px;animation:breathe 7s ease-in-out infinite;}
   @keyframes breathe{0%,100%{transform:scale(1);opacity:.45;}50%{transform:scale(1.07);opacity:.7;}}
   .avatar{
     position:absolute;inset:0;border-radius:50%;
-    background:linear-gradient(165deg,#B7C0A8,var(--clay));
+    background:linear-gradient(165deg,var(--celeste),var(--moon-deep));
     display:flex;align-items:center;justify-content:center;
-    border:4px solid var(--cream);box-shadow:0 10px 26px rgba(64,58,49,.16);overflow:hidden;
+    border:4px solid var(--frost);box-shadow:0 10px 26px rgba(44,58,64,.18);overflow:hidden;
   }
   /* 📷 foto vera: background:url('raquel.jpg') center/cover; e togli lo span */
-  .avatar span{font-family:var(--serif);font-size:52px;color:var(--cream);font-style:italic;}
+  .avatar span{font-family:var(--serif);font-size:52px;color:var(--frost);font-style:italic;}
   aside h1{font-family:var(--serif);font-weight:500;font-size:34px;letter-spacing:1px;}
-  .brand{font-family:var(--serif);font-size:17px;color:var(--clay);letter-spacing:6px;}
+  .brand{font-family:var(--serif);font-size:17px;color:var(--moon-deep);letter-spacing:6px;}
   .tagline{font-size:10.5px;letter-spacing:3px;text-transform:uppercase;color:var(--ink-soft);margin-top:12px;font-weight:400;}
 
   nav{width:100%;margin-top:26px;display:flex;flex-direction:column;gap:8px;}
@@ -96,9 +100,10 @@
     padding:13px 16px;cursor:pointer;transition:all .4s ease;
     display:flex;align-items:center;gap:11px;letter-spacing:.3px;
   }
-  nav button .n-ico{font-size:17px;width:24px;text-align:center;}
-  nav button:hover{background:rgba(148,161,130,.14);}
-  nav button.on{background:var(--sage-deep);color:var(--cream);box-shadow:0 8px 20px rgba(87,96,75,.28);}
+  nav button .n-ico{font-size:16px;width:22px;text-align:center;color:var(--moon-deep);}
+  nav button:hover{background:rgba(110,147,173,.12);}
+  nav button.on{background:var(--moon-deep);color:var(--frost);box-shadow:0 8px 20px rgba(63,97,120,.28);}
+  nav button.on .n-ico{color:var(--celeste);}
 
   .side-social{margin-top:auto;padding-top:22px;display:flex;gap:9px;width:100%;}
   .side-social a{
@@ -107,9 +112,9 @@
     background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:100px;
     padding:11px 8px;transition:all .4s ease;
   }
-  .side-social a:hover{background:var(--clay);color:var(--cream);border-color:var(--clay);}
+  .side-social a:hover{background:var(--moon-deep);color:var(--frost);border-color:var(--moon-deep);}
   .side-foot{margin-top:14px;font-size:10px;color:var(--ink-soft);letter-spacing:2px;}
-  .side-foot .moon{color:var(--clay);animation:breathe 7s ease-in-out infinite;display:inline-block;}
+  .side-foot .moon{color:var(--moon);animation:breathe 7s ease-in-out infinite;display:inline-block;}
 
   /* ---------- MAIN ---------- */
   main{position:relative;overflow:hidden;border-radius:26px;}
@@ -125,91 +130,91 @@
   .v-head{text-align:center;margin:18px 0 26px;}
   .v-head h2{font-family:var(--serif);font-weight:500;font-size:34px;letter-spacing:.5px;}
   .v-head p{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink-soft);margin-top:2px;}
-  .v-head .leaf{display:block;margin:12px auto 0;width:46px;opacity:.55;}
+  .divider{display:block;margin:12px auto 0;font-size:15px;letter-spacing:6px;color:var(--moon);opacity:.7;}
 
   .cards{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;align-content:flex-start;}
   .card{
-    width:214px;background:rgba(252,250,245,.78);backdrop-filter:blur(10px);
+    width:214px;background:rgba(246,250,250,.8);backdrop-filter:blur(10px);
     border:1px solid var(--line);border-radius:22px;padding:26px 20px 22px;
     text-align:center;cursor:pointer;text-decoration:none;color:var(--ink);
-    transition:all .5s ease;box-shadow:0 4px 16px rgba(64,58,49,.05);
+    transition:all .5s ease;box-shadow:0 4px 16px rgba(44,58,64,.05);
     display:flex;flex-direction:column;align-items:center;
   }
-  .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(64,58,49,.13);border-color:#c9c0ab;background:var(--cream);}
+  .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(44,58,64,.13);border-color:var(--celeste);background:var(--frost);}
   .card .c-ico{
-    width:58px;height:58px;border-radius:50%;font-size:26px;margin-bottom:14px;
-    background:linear-gradient(150deg,var(--mist-2),#E4D8C0);
+    width:58px;height:58px;border-radius:50%;font-size:24px;margin-bottom:14px;
+    background:linear-gradient(150deg,var(--celeste),var(--glow));color:var(--moon-deep);
     display:flex;align-items:center;justify-content:center;transition:transform .5s ease;
   }
   .card:hover .c-ico{transform:scale(1.12) rotate(-6deg);}
   .card strong{font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:.3px;}
   .card small{font-size:12.5px;color:var(--ink-soft);margin-top:5px;}
-  .card .go{margin-top:16px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--clay);font-weight:500;opacity:.75;transition:all .4s ease;}
+  .card .go{margin-top:16px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--moon-deep);font-weight:500;opacity:.75;transition:all .4s ease;}
   .card:hover .go{opacity:1;letter-spacing:2.5px;}
 
   /* ---------- FLOW47 ---------- */
   .flow-grid{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;}
   .flow-info{
-    width:300px;color:var(--cream);border-radius:24px;padding:30px 26px;position:relative;overflow:hidden;
-    background:linear-gradient(160deg,#57604B 0%,#6E7A5E 60%,#7d8a6b 100%);
-    box-shadow:0 18px 46px rgba(87,96,75,.30);
+    width:300px;color:var(--frost);border-radius:24px;padding:30px 26px;position:relative;overflow:hidden;
+    background:linear-gradient(160deg,#365468 0%,#4F7089 55%,#6E93AD 100%);
+    box-shadow:0 18px 46px rgba(54,84,104,.32);
   }
-  .flow-info .moon-bg{position:absolute;top:-26px;right:-12px;font-size:120px;color:rgba(255,255,255,.07);font-family:var(--serif);}
-  .flow-info .kick{font-size:10.5px;letter-spacing:4px;text-transform:uppercase;color:#D9E0CC;}
+  .flow-info .moon-bg{position:absolute;top:-26px;right:-12px;font-size:120px;color:rgba(255,255,255,.09);font-family:var(--serif);}
+  .flow-info .kick{font-size:10.5px;letter-spacing:4px;text-transform:uppercase;color:var(--celeste);}
   .flow-info h3{font-family:var(--serif);font-size:36px;font-weight:500;margin:8px 0 2px;letter-spacing:1px;}
-  .flow-info .price{font-family:var(--serif);font-style:italic;font-size:17px;color:#EDE9DC;margin-bottom:16px;}
+  .flow-info .price{font-family:var(--serif);font-style:italic;font-size:17px;color:#E4EEF2;margin-bottom:16px;}
   .flow-info ul{list-style:none;display:grid;gap:9px;}
-  .flow-info li{font-size:13.5px;display:flex;gap:10px;align-items:center;color:#F0EDE2;}
-  .flow-info li::before{content:"✿";color:var(--blossom-2);font-size:11px;}
+  .flow-info li{font-size:13.5px;display:flex;gap:10px;align-items:center;color:#EAF2F5;}
+  .flow-info li::before{content:"✧";color:var(--celeste);font-size:12px;}
 
-  /* ---------- FORM (stile condiviso) ---------- */
+  /* ---------- FORM ---------- */
   .zform{
-    width:330px;background:rgba(252,250,245,.82);backdrop-filter:blur(10px);
+    width:330px;background:rgba(246,250,250,.85);backdrop-filter:blur(10px);
     border:1px solid var(--line);border-radius:24px;padding:26px 24px;
-    box-shadow:0 10px 30px rgba(64,58,49,.08);
+    box-shadow:0 10px 30px rgba(44,58,64,.08);
   }
   .zform h4{font-family:var(--serif);font-size:23px;font-weight:500;margin-bottom:4px;}
   .zform .sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
   .zform label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin:13px 0 5px;font-weight:500;}
   .zform input[type=text],.zform input[type=email],.zform input[type=tel],.zform textarea{
     width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);font-weight:300;
-    background:rgba(255,255,255,.78);border:1px solid var(--line);border-radius:12px;
+    background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:12px;
     padding:12px 14px;outline:none;transition:border .3s ease;resize:none;
   }
-  .zform input:focus,.zform textarea:focus{border-color:var(--sage);}
+  .zform input:focus,.zform textarea:focus{border-color:var(--moon);}
   .zform .radios{display:flex;gap:8px;flex-wrap:wrap;}
   .zform .radios label{
     flex:1;margin:0;display:flex;align-items:center;justify-content:center;gap:6px;
     font-size:12px;text-transform:none;letter-spacing:.2px;color:var(--ink);
-    background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:100px;
+    background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:100px;
     padding:10px 8px;cursor:pointer;transition:all .3s ease;white-space:nowrap;
   }
-  .zform .radios input{accent-color:var(--sage-deep);}
-  .zform .radios label:has(input:checked){background:var(--sage-deep);color:var(--cream);border-color:var(--sage-deep);}
+  .zform .radios input{accent-color:var(--moon-deep);}
+  .zform .radios label:has(input:checked){background:var(--moon-deep);color:var(--frost);border-color:var(--moon-deep);}
   .zform .agree{display:flex;gap:10px;align-items:flex-start;margin-top:14px;cursor:pointer;}
-  .zform .agree input{margin-top:3px;accent-color:var(--sage-deep);flex-shrink:0;}
+  .zform .agree input{margin-top:3px;accent-color:var(--moon-deep);flex-shrink:0;}
   .zform .agree span{font-size:12px;color:var(--ink-soft);line-height:1.5;}
   .zform button[type=submit]{
     width:100%;margin-top:18px;font-family:var(--sans);font-size:14.5px;font-weight:500;letter-spacing:.5px;
-    color:var(--cream);background:var(--clay);border:none;border-radius:14px;
+    color:var(--frost);background:var(--moon-deep);border:none;border-radius:14px;
     padding:15px;cursor:pointer;transition:all .4s ease;
   }
-  .zform button[type=submit]:hover{background:#8f5f3d;transform:translateY(-2px);box-shadow:0 10px 22px rgba(166,117,79,.35);}
+  .zform button[type=submit]:hover{background:#345267;transform:translateY(-2px);box-shadow:0 10px 22px rgba(63,97,120,.35);}
   .zform button[type=submit]:disabled{opacity:.6;cursor:wait;transform:none;}
   .z-ok{text-align:center;padding:40px 24px;}
-  .z-ok .big{font-size:44px;margin-bottom:12px;}
+  .z-ok .big{font-size:40px;margin-bottom:12px;color:var(--moon);}
   .z-ok h4{font-family:var(--serif);font-size:26px;font-weight:500;}
   .z-ok p{font-size:13.5px;color:var(--ink-soft);margin-top:8px;}
 
   /* ---------- MODAL ---------- */
   .overlay{
-    position:fixed;inset:0;z-index:100;background:rgba(64,58,49,.45);backdrop-filter:blur(6px);
+    position:fixed;inset:0;z-index:100;background:rgba(44,58,64,.45);backdrop-filter:blur(6px);
     display:flex;align-items:center;justify-content:center;padding:22px;
     opacity:0;pointer-events:none;transition:opacity .4s ease;
   }
   .overlay.on{opacity:1;pointer-events:auto;}
   .sheet{
-    width:min(560px,100%);max-height:min(86dvh,780px);background:var(--cream);border-radius:24px;
+    width:min(560px,100%);max-height:min(86dvh,780px);background:var(--frost);border-radius:24px;
     overflow:hidden;display:flex;flex-direction:column;
     transform:translateY(26px) scale(.97);transition:transform .45s ease;
     box-shadow:0 30px 80px rgba(0,0,0,.3);
@@ -221,19 +226,19 @@
     width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:transparent;
     font-size:15px;cursor:pointer;color:var(--ink);transition:all .3s ease;flex-shrink:0;
   }
-  .sheet-bar .x:hover{background:var(--ink);color:var(--cream);}
+  .sheet-bar .x:hover{background:var(--ink);color:var(--frost);}
   .sheet-body{overflow-y:auto;display:flex;flex-direction:column;}
   .sheet-body .zform{width:100%;border:none;border-radius:0;box-shadow:none;background:transparent;backdrop-filter:none;}
-  .sheet-body .photo-box{display:flex;align-items:center;justify-content:center;background:#2e2a24;min-height:300px;}
+  .sheet-body .photo-box{display:flex;align-items:center;justify-content:center;background:#1e2a30;min-height:300px;}
   .sheet-body .photo-box img{max-width:100%;max-height:78dvh;object-fit:contain;display:block;}
-  .photo-missing{color:#cfc5b4;font-size:14px;text-align:center;padding:40px 30px;line-height:2;}
+  .photo-missing{color:#b7c8ce;font-size:14px;text-align:center;padding:40px 30px;line-height:2;}
 
-  /* ---------- TOAST GRAZIE ---------- */
+  /* ---------- TOAST ---------- */
   .toast{
     position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);
-    background:var(--sage-deep);color:var(--cream);z-index:200;
+    background:var(--moon-deep);color:var(--frost);z-index:200;
     padding:15px 26px;border-radius:100px;font-size:14px;letter-spacing:.3px;
-    box-shadow:0 14px 34px rgba(87,96,75,.4);transition:transform .6s ease;
+    box-shadow:0 14px 34px rgba(63,97,120,.4);transition:transform .6s ease;
   }
   .toast.on{transform:translateX(-50%) translateY(0);}
 
@@ -246,7 +251,7 @@
     aside h1{font-size:29px;}
     nav{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:20px;}
     nav button{padding:10px 13px;font-size:12.5px;border-radius:100px;border:1px solid var(--line);background:rgba(255,255,255,.55);}
-    nav button .n-ico{width:auto;font-size:15px;}
+    nav button .n-ico{width:auto;font-size:14px;}
     .side-social{margin-top:18px;}
     main{overflow:visible;min-height:0;}
     .view{position:static;display:none;opacity:1;transform:none;padding:0;}
@@ -254,27 +259,25 @@
     .cards{gap:14px;}
     .card{width:100%;max-width:360px;}
     .flow-info,.zform{width:100%;max-width:380px;}
-    .sheet{max-height:92dvh;}
+    .sheet{max-height:92dvh;border-radius:22px 22px 0 0;width:100%;}
     .overlay{padding:12px;align-items:flex-end;}
-    .sheet{border-radius:22px 22px 0 0;width:100%;}
-    .tree-photo{height:60vh;opacity:.4;right:-18vw;}
-    .tree-svg{height:52vh;opacity:.4;right:-70px;}
+    .tree-photo{height:60vh;opacity:.32;right:-18vw;}
+    .tree-svg{height:52vh;opacity:.35;right:-70px;}
   }
   @media (prefers-reduced-motion: reduce){
-    .petal,.tree-photo,.tree-svg,.enso,.side-foot .moon{animation:none!important;}
-    #petals{display:none;}
+    .glyph,.tree-photo,.tree-svg,.enso,.side-foot .moon{animation:none!important;}
+    #sky{display:none;}
   }
 </style>
 </head>
 <body>
 
-<!-- ═══════════ CILIEGIO: foto soffusa (metti "ciliegio.png" nella cartella) ═══════════ -->
+<!-- ═══════════ CILIEGIO ═══════════ -->
 <img class="tree-photo" src="ciliegio.png" alt="" aria-hidden="true"
      onerror="this.style.display='none';document.querySelector('.tree-svg').style.display='block';">
 
-<!-- fallback disegnato se manca la foto -->
 <svg class="tree-svg" viewBox="0 0 420 560" aria-hidden="true">
-  <g fill="none" stroke="#7A5C44" stroke-linecap="round">
+  <g fill="none" stroke="#4A5D66" stroke-linecap="round">
     <path d="M300 560 C290 480 280 430 250 370 C225 322 215 290 218 250" stroke-width="26"/>
     <path d="M250 370 C220 330 180 300 130 285" stroke-width="14"/>
     <path d="M218 250 C215 210 225 175 260 140" stroke-width="12"/>
@@ -284,14 +287,14 @@
     <path d="M262 300 C300 280 330 275 365 280" stroke-width="9"/>
   </g>
   <g>
-    <g fill="#F2C4CE"><circle cx="120" cy="188" r="46"/><circle cx="345" cy="90" r="42"/><circle cx="212" cy="128" r="50"/></g>
-    <g fill="#E8A9B8"><circle cx="62" cy="210" r="34"/><circle cx="165" cy="150" r="42"/><circle cx="290" cy="118" r="44"/><circle cx="372" cy="272" r="38"/></g>
-    <g fill="#F7DCE3"><circle cx="140" cy="122" r="30"/><circle cx="255" cy="90" r="32"/><circle cx="330" cy="150" r="34"/><circle cx="95" cy="255" r="28"/><circle cx="320" cy="300" r="30"/></g>
-    <g fill="#E8A9B8" opacity=".75"><circle cx="185" cy="95" r="24"/><circle cx="300" cy="200" r="36"/><circle cx="240" cy="180" r="30"/></g>
+    <g fill="#A7C8D6"><circle cx="120" cy="188" r="46"/><circle cx="345" cy="90" r="42"/><circle cx="212" cy="128" r="50"/></g>
+    <g fill="#6E93AD"><circle cx="62" cy="210" r="34"/><circle cx="165" cy="150" r="42"/><circle cx="290" cy="118" r="44"/><circle cx="372" cy="272" r="38"/></g>
+    <g fill="#BFD9E1"><circle cx="140" cy="122" r="30"/><circle cx="255" cy="90" r="32"/><circle cx="330" cy="150" r="34"/><circle cx="95" cy="255" r="28"/><circle cx="320" cy="300" r="30"/></g>
+    <g fill="#84AC98" opacity=".7"><circle cx="185" cy="95" r="24"/><circle cx="300" cy="200" r="36"/><circle cx="240" cy="180" r="30"/></g>
   </g>
 </svg>
 
-<div id="petals" aria-hidden="true"></div>
+<div id="sky" aria-hidden="true"></div>
 
 <!-- ═══════════ APP ═══════════ -->
 <div class="app">
@@ -299,7 +302,7 @@
   <aside>
     <div class="enso-wrap">
       <svg class="enso" viewBox="0 0 100 100" aria-hidden="true">
-        <path d="M50 8 A42 42 0 1 1 22 18" fill="none" stroke="#A6754F" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>
+        <path d="M50 8 A42 42 0 1 1 22 18" fill="none" stroke="#6E93AD" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
       </svg>
       <div class="avatar"><span>R</span></div>
     </div>
@@ -308,10 +311,10 @@
     <div class="tagline">Energia · Presenza · Connessione</div>
 
     <nav>
-      <button class="on" data-v="prova"><span class="n-ico">🌸</span>Inizia gratis</button>
-      <button data-v="flow"><span class="n-ico">🌙</span>FLOW47</button>
-      <button data-v="eventi"><span class="n-ico">🌿</span>Eventi & Ritiri</button>
-      <button data-v="privato"><span class="n-ico">🤍</span>Lezioni private</button>
+      <button class="on" data-v="prova"><span class="n-ico">✧</span>Inizia gratis</button>
+      <button data-v="flow"><span class="n-ico">☾</span>FLOW47</button>
+      <button data-v="eventi"><span class="n-ico">⟡</span>Eventi & Ritiri</button>
+      <button data-v="privato"><span class="n-ico">☽</span>Lezioni private</button>
     </nav>
 
     <div class="side-social">
@@ -328,17 +331,17 @@
       <div class="v-head">
         <h2>Inizia da qui</h2>
         <p>tre pratiche introduttive, in regalo</p>
-        <svg class="leaf" viewBox="0 0 44 14"><path d="M2 7 H16 M28 7 H42" stroke="#A6754F" stroke-width=".8" opacity=".6"/><path d="M22 2 q4 5 0 10 q-4 -5 0 -10 Z" fill="#94A182" opacity=".7"/></svg>
+        <span class="divider">⋆ ☽ ✧ ☾ ⋆</span>
       </div>
       <div class="cards">
         <a class="card" href="https://drive.google.com/file/d/11XxH605E-zevo6ExHCqxW4xqjnqNITaN/view" target="_blank" rel="noopener">
-          <div class="c-ico">🌊</div><strong>Vinyasa</strong><small>Fluire con il respiro</small><span class="go">Guarda →</span>
+          <div class="c-ico">✧</div><strong>Vinyasa</strong><small>Fluire con il respiro</small><span class="go">Guarda →</span>
         </a>
         <a class="card" href="https://drive.google.com/file/d/13M1-tLSHjKQODE4HPUpbk075-R3q6hSS/view" target="_blank" rel="noopener">
-          <div class="c-ico">🌙</div><strong>Yin</strong><small>Rallentare e rilasciare</small><span class="go">Guarda →</span>
+          <div class="c-ico">☾</div><strong>Yin</strong><small>Rallentare e rilasciare</small><span class="go">Guarda →</span>
         </a>
         <a class="card" href="https://drive.google.com/file/d/1Uila6HABf9uAJvjH602n4Xnxbm-YwRXj/view" target="_blank" rel="noopener">
-          <div class="c-ico">🪷</div><strong>Meditazione</strong><small>Tornare al presente</small><span class="go">Guarda →</span>
+          <div class="c-ico">⟡</div><strong>Meditazione</strong><small>Tornare al presente</small><span class="go">Guarda →</span>
         </a>
       </div>
     </section>
@@ -348,7 +351,7 @@
       <div class="v-head">
         <h2>FLOW47</h2>
         <p>47 giorni per fare della pratica un'abitudine</p>
-        <svg class="leaf" viewBox="0 0 44 14"><path d="M2 7 H16 M28 7 H42" stroke="#A6754F" stroke-width=".8" opacity=".6"/><path d="M22 2 q4 5 0 10 q-4 -5 0 -10 Z" fill="#94A182" opacity=".7"/></svg>
+        <span class="divider">⋆ ☽ ✧ ☾ ⋆</span>
       </div>
       <div class="flow-grid">
         <div class="flow-info">
@@ -363,7 +366,7 @@
             <li>Pratichi quando vuoi, dove vuoi</li>
           </ul>
         </div>
-        <form class="zform" data-subject="✨ Nuova iscrizione FLOW47" autocomplete="off">
+        <form class="zform" data-subject="✧ Nuova iscrizione FLOW47" autocomplete="off">
           <h4>Iscriviti</h4>
           <div class="sub">Compila e Raquel ti scrive con tutti i dettagli.</div>
           <label>Nome e Cognome</label>
@@ -372,7 +375,7 @@
           <input type="email" name="Email" placeholder="La tua email" required autocomplete="off">
           <label>Messaggio (facoltativo)</label>
           <textarea name="Messaggio" rows="3" placeholder="Domande, livello di pratica…"></textarea>
-          <button type="submit">Voglio iniziare FLOW47 ✨</button>
+          <button type="submit">Voglio iniziare FLOW47 ✧</button>
         </form>
       </div>
     </section>
@@ -382,17 +385,17 @@
       <div class="v-head">
         <h2>Eventi & Ritiri</h2>
         <p>vivere la pratica dal vivo</p>
-        <svg class="leaf" viewBox="0 0 44 14"><path d="M2 7 H16 M28 7 H42" stroke="#A6754F" stroke-width=".8" opacity=".6"/><path d="M22 2 q4 5 0 10 q-4 -5 0 -10 Z" fill="#94A182" opacity=".7"/></svg>
+        <span class="divider">⋆ ☽ ✧ ☾ ⋆</span>
       </div>
       <div class="cards">
         <div class="card" data-photo="retreat.jpg" data-title="Yoga Retreat · Ticino">
-          <div class="c-ico">⛰️</div><strong>Yoga Retreat</strong><small>Un ritiro nella natura del Ticino</small><span class="go">Scopri →</span>
+          <div class="c-ico">⟡</div><strong>Yoga Retreat</strong><small>Val Lavizzara · 4–6 settembre</small><span class="go">Scopri →</span>
         </div>
         <div class="card" data-form="tpl-yin" data-title="Yin & Sound Journey">
-          <div class="c-ico">🔔</div><strong>Yin & Sound</strong><small>Ascona · Valle del Silenzio · 45 CHF</small><span class="go">Iscriviti →</span>
+          <div class="c-ico">☾</div><strong>Yin & Sound</strong><small>Ascona · Valle del Silenzio · 45 CHF</small><span class="go">Iscriviti →</span>
         </div>
         <div class="card" data-form="tpl-pane" data-title="Workshop Yoga & Pane">
-          <div class="c-ico">🍞</div><strong>Yoga & Pane</strong><small>Iragna · 16 agosto</small><span class="go">Iscriviti →</span>
+          <div class="c-ico">✧</div><strong>Yoga & Pane</strong><small>Iragna · 16 agosto</small><span class="go">Iscriviti →</span>
         </div>
       </div>
     </section>
@@ -402,11 +405,11 @@
       <div class="v-head">
         <h2>Su misura per te</h2>
         <p>lezioni individuali ed eventi privati</p>
-        <svg class="leaf" viewBox="0 0 44 14"><path d="M2 7 H16 M28 7 H42" stroke="#A6754F" stroke-width=".8" opacity=".6"/><path d="M22 2 q4 5 0 10 q-4 -5 0 -10 Z" fill="#94A182" opacity=".7"/></svg>
+        <span class="divider">⋆ ☽ ✧ ☾ ⋆</span>
       </div>
       <div class="cards">
         <div class="card" data-form="tpl-privato" data-title="Lezioni o eventi privati">
-          <div class="c-ico">🤍</div><strong>Richiedi</strong><small>Pratiche individuali, piccoli gruppi, occasioni speciali</small><span class="go">Scrivimi →</span>
+          <div class="c-ico">☽</div><strong>Richiedi</strong><small>Pratiche individuali, piccoli gruppi, occasioni speciali</small><span class="go">Scrivimi →</span>
         </div>
         <a class="card" href="https://wa.me/41792803563" target="_blank" rel="noopener">
           <div class="c-ico">✆</div><strong>WhatsApp</strong><small>Preferisci parlarne direttamente? Scrivimi un messaggio</small><span class="go">Apri chat →</span>
@@ -417,10 +420,10 @@
   </main>
 </div>
 
-<!-- ═══════════ TEMPLATE FORM (ricostruiti dai Google Forms di Raquel) ═══════════ -->
+<!-- ═══════════ TEMPLATE FORM ═══════════ -->
 
 <template id="tpl-yin">
-  <form class="zform" data-subject="🔔 Iscrizione — Yin & Sound Journey" autocomplete="off">
+  <form class="zform" data-subject="☾ Iscrizione — Yin & Sound Journey" autocomplete="off">
     <div class="sub">Un viaggio di profondo rilassamento nella magia della Valle del Silenzio · Ascona · 45 CHF</div>
     <label>Nome e Cognome</label>
     <input type="text" name="Nome e Cognome" placeholder="Il tuo nome" required autocomplete="off">
@@ -430,9 +433,9 @@
     <input type="tel" name="Telefono" placeholder="+41 …" required autocomplete="off">
     <label>Hai già praticato Yin Yoga?</label>
     <div class="radios">
-      <label><input type="radio" name="Hai già praticato Yin Yoga" value="mai" required> mai</label>
-      <label><input type="radio" name="Hai già praticato Yin Yoga" value="qualche volta"> qualche volta</label>
-      <label><input type="radio" name="Hai già praticato Yin Yoga" value="regolarmente"> regolarmente</label>
+      <label><input type="radio" name="Esperienza Yin Yoga" value="mai" required> mai</label>
+      <label><input type="radio" name="Esperienza Yin Yoga" value="qualche volta"> qualche volta</label>
+      <label><input type="radio" name="Esperienza Yin Yoga" value="regolarmente"> regolarmente</label>
     </div>
     <label>Condizioni fisiche, infortuni o limitazioni da conoscere</label>
     <textarea name="Condizioni fisiche" rows="2" placeholder="Scrivi qui (o «nessuna»)" required></textarea>
@@ -440,13 +443,13 @@
       <span>Accetto la politica di cancellazione dell'evento.</span></label>
     <label class="agree"><input type="checkbox" name="Responsabilità e assicurazione" value="Accettata" required>
       <span>Comprendo che responsabilità e assicurazione in caso di infortunio sono a carico di ciascun partecipante.</span></label>
-    <button type="submit">Riserva il tuo posto 🔔</button>
+    <button type="submit">Riserva il tuo posto ☾</button>
   </form>
 </template>
 
 <template id="tpl-pane">
-  <form class="zform" data-subject="🍞 Iscrizione — Workshop Yoga & Pane (16 agosto)" autocomplete="off">
-    <div class="sub">🌿 Pane, respiro e tempo vero. Il 16 agosto ad Iragna: yoga con Raquel, pane artigianale con Anna, colazione sotto la pergola.</div>
+  <form class="zform" data-subject="✧ Iscrizione — Workshop Yoga & Pane (16 agosto)" autocomplete="off">
+    <div class="sub">Pane, respiro e tempo vero. Il 16 agosto ad Iragna: yoga con Raquel, pane artigianale con Anna, colazione sotto la pergola.</div>
     <label>Nome e Cognome</label>
     <input type="text" name="Nome e Cognome" placeholder="Il tuo nome" required autocomplete="off">
     <label>Email</label>
@@ -457,12 +460,12 @@
     <textarea name="Infortuni o dolori" rows="2" placeholder="Scrivi qui (o «nessuno»)" required></textarea>
     <label class="agree"><input type="checkbox" name="Responsabilità e assicurazione" value="Accettata" required>
       <span>Comprendo che responsabilità e assicurazione in caso di infortunio sono a carico di ciascun partecipante.</span></label>
-    <button type="submit">Riserva il tuo posto 🍞</button>
+    <button type="submit">Riserva il tuo posto ✧</button>
   </form>
 </template>
 
 <template id="tpl-privato">
-  <form class="zform" data-subject="🤍 Richiesta — Lezione o evento privato" autocomplete="off">
+  <form class="zform" data-subject="☽ Richiesta — Lezione o evento privato" autocomplete="off">
     <div class="sub">Una pratica solo per te o per il tuo gruppo: percorsi personalizzati, momenti autentici.</div>
     <label>Nome e Cognome</label>
     <input type="text" name="Nome e Cognome" placeholder="Il tuo nome" required autocomplete="off">
@@ -474,7 +477,7 @@
     <textarea name="Richiesta" rows="3" placeholder="Lezione individuale, evento privato, piccolo gruppo…"></textarea>
     <label class="agree"><input type="checkbox" name="Autorizzazione dati" value="Autorizzo" required>
       <span>Autorizzo l'utilizzo dei miei dati personali per essere ricontattato/a e concordare dettagli, orari e costi.</span></label>
-    <button type="submit">Invia la richiesta 🤍</button>
+    <button type="submit">Invia la richiesta ☽</button>
   </form>
 </template>
 
@@ -489,13 +492,13 @@
   </div>
 </div>
 
-<div class="toast" id="toast">🌸 Richiesta inviata — Raquel ti risponderà presto</div>
+<div class="toast" id="toast">✧ Richiesta inviata — Raquel ti risponderà presto</div>
 
 <script>
   const SITE_URL = 'https://akadk00.github.io/yoga-raquel/';
   const MAIL_ENDPOINT = 'dasilvra99@gmail.com';
 
-  /* ── navigazione a schede ── */
+  /* ── navigazione ── */
   const tabs = document.querySelectorAll('nav button');
   tabs.forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -506,21 +509,21 @@
     });
   });
 
-  /* ── petali ── */
-  const COLORS = ['#E8A9B8','#F2C4CE','#F7DCE3','#D8B7A5','#B7C0A8','#94A182','#E3CBB8'];
-  const holder = document.getElementById('petals');
+  /* ── simboli celesti che cadono ── */
+  const GLYPHS = ['⋆','☾','☽','✧','⟡','✦','·'];
+  const COLORS = ['#6E93AD','#A7C8D6','#84AC98','#BFD9E1','#C9DCE0','#7FA0B4','#5E767C'];
+  const sky = document.getElementById('sky');
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
-    for(let i=0;i<26;i++){
-      const p = document.createElement('span');
-      p.className = 'petal';
-      const size = 9 + Math.random()*13;
-      const fall = 12 + Math.random()*14;
-      const sw = 3.5 + Math.random()*4;
-      const color = COLORS[Math.floor(Math.random()*COLORS.length)];
-      p.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;`+
-        `animation-duration:${fall}s,${sw}s;animation-delay:${Math.random()*22}s,${(Math.random()*2).toFixed(1)}s;`;
-      p.innerHTML = `<svg viewBox="0 0 20 20"><path d="M10 1 C15 5 16 12 10 19 C4 12 5 5 10 1 Z" fill="${color}"/></svg>`;
-      holder.appendChild(p);
+    for(let i=0;i<30;i++){
+      const g = document.createElement('span');
+      g.className = 'glyph';
+      const size = 11 + Math.random()*17;
+      const fall = 13 + Math.random()*15;
+      const tw = 2.5 + Math.random()*3;
+      g.textContent = GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
+      g.style.cssText = `left:${Math.random()*100}%;font-size:${size}px;color:${COLORS[Math.floor(Math.random()*COLORS.length)]};`+
+        `animation-duration:${fall}s,${tw}s;animation-delay:${Math.random()*24}s,${(Math.random()*2).toFixed(1)}s;`;
+      sky.appendChild(g);
     }
   }
 
@@ -528,50 +531,62 @@
   const overlay = document.getElementById('overlay');
   const sBody = document.getElementById('sheet-body');
   const sTitle = document.getElementById('sheet-title');
-
   function openSheet(title, node){
     sTitle.textContent = title;
-    sBody.innerHTML = '';
-    sBody.appendChild(node);
-    overlay.classList.add('on');
-    document.body.style.overflow = 'hidden';
+    sBody.innerHTML = ''; sBody.appendChild(node);
+    overlay.classList.add('on'); document.body.style.overflow = 'hidden';
   }
   function closeSheet(){
-    overlay.classList.remove('on');
-    document.body.style.overflow = '';
+    overlay.classList.remove('on'); document.body.style.overflow = '';
     setTimeout(()=>{ sBody.innerHTML=''; }, 400);
   }
   document.getElementById('sheet-close').addEventListener('click', closeSheet);
   overlay.addEventListener('click', e=>{ if(e.target===overlay) closeSheet(); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSheet(); });
 
-  /* apre i form nativi */
   document.querySelectorAll('[data-form]').forEach(el=>{
     el.addEventListener('click', ()=>{
-      const tpl = document.getElementById(el.dataset.form);
-      const node = tpl.content.cloneNode(true).firstElementChild;
-      bindForm(node);
-      openSheet(el.dataset.title, node);
+      const node = document.getElementById(el.dataset.form).content.cloneNode(true).firstElementChild;
+      bindForm(node); openSheet(el.dataset.title, node);
     });
   });
-
-  /* apre la foto del retreat */
   document.querySelectorAll('[data-photo]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const box = document.createElement('div');
       box.className = 'photo-box';
       box.innerHTML = `<img src="${el.dataset.photo}" alt="${el.dataset.title}"
-        onerror="this.outerHTML='<div class=&quot;photo-missing&quot;>🌸<br>La locandina arriva presto.<br>Per info scrivimi su WhatsApp.</div>'">`;
+        onerror="this.outerHTML='<div class=&quot;photo-missing&quot;>☾<br>La locandina arriva presto.<br>Per info scrivimi su WhatsApp.</div>'">`;
       openSheet(el.dataset.title, box);
     });
   });
 
-  /* ── invio form → email di Raquel (FormSubmit) ── */
+  /* ── invio form → email leggibile a Raquel ── */
   function showSuccess(form){
     const ok = document.createElement('div');
     ok.className = 'z-ok';
-    ok.innerHTML = '<div class="big">🌸</div><h4>Richiesta inviata</h4><p>Raquel ti risponderà al più presto.<br>A presto sul tappetino.</p>';
+    ok.innerHTML = '<div class="big">☾</div><h4>Richiesta inviata</h4><p>Raquel ti risponderà al più presto.<br>A presto sul tappetino.</p>';
     form.replaceWith(ok);
+  }
+  function buildPayload(form){
+    /* trascrizione leggibile: una riga "Campo: valore" per ogni risposta compilata */
+    const righe = [];
+    const data = {};
+    form.querySelectorAll('input, textarea').forEach(el=>{
+      if(el.type==='radio' && !el.checked) return;
+      if(el.type==='checkbox'){ if(!el.checked) return; }
+      const val = el.value.trim();
+      if(!val) return;
+      const label = el.name;
+      data[label] = val;
+      righe.push(label + ': ' + val);
+    });
+    return {
+      _subject: form.dataset.subject,
+      _template: 'box',
+      _captcha: 'false',
+      Riepilogo: righe.join('\n'),
+      ...data
+    };
   }
   function bindForm(form){
     form.addEventListener('submit', async e=>{
@@ -579,27 +594,21 @@
       const btn = form.querySelector('button[type=submit]');
       const orig = btn.textContent;
       btn.disabled = true; btn.textContent = 'Invio in corso…';
-      const data = Object.fromEntries(new FormData(form).entries());
-      data._subject = form.dataset.subject;
-      data._template = 'table';
-      data._captcha = 'false';
+      const payload = buildPayload(form);
       try{
         const r = await fetch('https://formsubmit.co/ajax/'+MAIL_ENDPOINT, {
           method:'POST',
           headers:{'Content-Type':'application/json','Accept':'application/json'},
-          body: JSON.stringify(data)
+          body: JSON.stringify(payload)
         });
         if(!r.ok) throw new Error('http '+r.status);
         showSuccess(form);
       }catch(err){
-        /* fallback: invio classico con redirect di ringraziamento */
+        /* fallback: invio classico */
         form.action = 'https://formsubmit.co/'+MAIL_ENDPOINT;
         form.method = 'POST';
-        [['_subject',form.dataset.subject],['_template','table'],['_captcha','false'],['_next',SITE_URL+'?grazie=1']]
-          .forEach(([n,v])=>{
-            const h = document.createElement('input');
-            h.type='hidden'; h.name=n; h.value=v; form.appendChild(h);
-          });
+        Object.entries({_subject:form.dataset.subject,_template:'box',_captcha:'false',_next:SITE_URL+'?grazie=1'})
+          .forEach(([n,v])=>{ const h=document.createElement('input'); h.type='hidden'; h.name=n; h.value=v; form.appendChild(h); });
         btn.textContent = orig; btn.disabled = false;
         form.submit();
       }
@@ -607,7 +616,6 @@
   }
   document.querySelectorAll('form.zform').forEach(bindForm);
 
-  /* toast di ritorno dopo l'invio classico */
   if(new URLSearchParams(location.search).has('grazie')){
     const t = document.getElementById('toast');
     setTimeout(()=>t.classList.add('on'), 600);

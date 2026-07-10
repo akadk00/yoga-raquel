@@ -33,6 +33,21 @@
     -webkit-font-smoothing:antialiased;overflow:hidden;
   }
 
+  /* ═══════════════ SFONDO FOTO: due tramonti ═══════════════ */
+  .bg-photo{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-size:cover;background-position:center;
+    opacity:0;transition:opacity 1.4s ease;
+  }
+  #bg-alba{background-image:url('tramonto-alba.jpg');}
+  #bg-notte{background-image:url('tramonto-notte.jpg');}
+  body[data-bg="alba"] #bg-alba{opacity:1;}
+  body[data-bg="notte"] #bg-notte{opacity:1;}
+  /* velo per la leggibilità, calibrato per ciascuna foto */
+  .bg-veil{position:fixed;inset:0;z-index:-1;pointer-events:none;transition:background 1.4s ease;}
+  body[data-bg="alba"] .bg-veil{background:linear-gradient(180deg, rgba(238,244,244,.28), rgba(238,244,244,.55));}
+  body[data-bg="notte"] .bg-veil{background:linear-gradient(180deg, rgba(12,20,30,.15), rgba(12,20,30,.42));}
+
   /* ═══════════════ CILIEGIO (tinta lunare, soffuso) ═══════════════ */
   .tree-photo{
     position:fixed;right:-6vw;bottom:-4vh;height:96vh;z-index:0;
@@ -51,20 +66,17 @@
     transform-origin:bottom center;animation:tree-sway 10s ease-in-out infinite alternate;
   }
 
-  /* ═══════════════ SIMBOLI CELESTI CHE CADONO ═══════════════ */
-  #sky{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;}
-  .glyph{
-    position:absolute;top:-6vh;opacity:0;line-height:1;
-    color:var(--moon);text-shadow:0 0 10px rgba(167,200,214,.6);
-    animation:fall linear infinite, twinkle ease-in-out infinite;
+  /* ═══════════════ STELLE CADENTI (ogni tanto) ═══════════════ */
+  .shooting{
+    position:fixed;z-index:49;pointer-events:none;
+    width:3px;height:3px;border-radius:50%;background:#fff;
+    box-shadow:0 0 8px 2px rgba(255,255,255,.75);
   }
-  @keyframes fall{
-    0%{transform:translateY(-6vh) rotate(0deg);opacity:0;}
-    8%{opacity:.85;}
-    86%{opacity:.7;}
-    100%{transform:translateY(108vh) rotate(190deg);opacity:0;}
+  .shooting::before{
+    content:"";position:absolute;right:2px;top:50%;transform:translateY(-50%);
+    width:130px;height:1.5px;
+    background:linear-gradient(to left, rgba(255,255,255,.85), transparent);
   }
-  @keyframes twinkle{0%,100%{filter:brightness(1);}50%{filter:brightness(1.5);}}
 
   /* ═══════════════ APP SHELL ═══════════════ */
   .app{
@@ -115,6 +127,12 @@
   .side-social a:hover{background:var(--moon-deep);color:var(--frost);border-color:var(--moon-deep);}
   .side-foot{margin-top:14px;font-size:10px;color:var(--ink-soft);letter-spacing:2px;}
   .side-foot .moon{color:var(--moon);animation:breathe 7s ease-in-out infinite;display:inline-block;}
+  .bg-toggle{
+    margin-top:12px;font-family:var(--sans);font-size:11px;letter-spacing:1px;
+    color:var(--ink-soft);background:rgba(255,255,255,.55);border:1px solid var(--line);
+    border-radius:100px;padding:8px 16px;cursor:pointer;transition:all .4s ease;
+  }
+  .bg-toggle:hover{background:var(--moon-deep);color:var(--frost);border-color:var(--moon-deep);}
 
   /* ---------- MAIN ---------- */
   main{position:relative;overflow:hidden;border-radius:26px;}
@@ -128,9 +146,13 @@
   .view::-webkit-scrollbar{width:0;}
 
   .v-head{text-align:center;margin:18px 0 26px;}
-  .v-head h2{font-family:var(--serif);font-weight:500;font-size:34px;letter-spacing:.5px;}
-  .v-head p{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink-soft);margin-top:2px;}
-  .divider{display:block;margin:12px auto 0;font-size:15px;letter-spacing:6px;color:var(--moon);opacity:.7;}
+  .v-head h2{font-family:var(--serif);font-weight:500;font-size:34px;letter-spacing:.5px;transition:color .9s ease;}
+  .v-head p{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink-soft);margin-top:2px;transition:color .9s ease;}
+  .divider{display:block;margin:12px auto 0;font-size:15px;letter-spacing:6px;color:var(--moon);opacity:.7;transition:color .9s ease;}
+  /* di notte i titoli diventano chiari per restare leggibili sulla foto scura */
+  body[data-bg="notte"] .v-head h2{color:#EEF5F7;text-shadow:0 1px 14px rgba(8,16,26,.55);}
+  body[data-bg="notte"] .v-head p{color:#C6D9E0;text-shadow:0 1px 10px rgba(8,16,26,.5);}
+  body[data-bg="notte"] .divider{color:#BFD9E1;}
 
   .cards{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;align-content:flex-start;}
   .card{
@@ -165,7 +187,7 @@
   .flow-info .price{font-family:var(--serif);font-style:italic;font-size:17px;color:#E4EEF2;margin-bottom:16px;}
   .flow-info ul{list-style:none;display:grid;gap:9px;}
   .flow-info li{font-size:13.5px;display:flex;gap:10px;align-items:center;color:#EAF2F5;}
-  .flow-info li::before{content:"✧";color:var(--celeste);font-size:12px;}
+  .flow-info li::before{content:"✿";color:var(--celeste);font-size:12px;}
 
   /* ---------- FORM ---------- */
   .zform{
@@ -265,12 +287,17 @@
     .tree-svg{height:52vh;opacity:.35;right:-70px;}
   }
   @media (prefers-reduced-motion: reduce){
-    .glyph,.tree-photo,.tree-svg,.enso,.side-foot .moon{animation:none!important;}
-    #sky{display:none;}
+    .tree-photo,.tree-svg,.enso,.side-foot .moon{animation:none!important;}
+    .shooting{display:none;}
   }
 </style>
 </head>
-<body>
+<body data-bg="alba">
+
+<!-- ═══════════ SFONDI: due tramonti ═══════════ -->
+<div class="bg-photo" id="bg-alba" aria-hidden="true"></div>
+<div class="bg-photo" id="bg-notte" aria-hidden="true"></div>
+<div class="bg-veil" aria-hidden="true"></div>
 
 <!-- ═══════════ CILIEGIO ═══════════ -->
 <img class="tree-photo" src="ciliegio.png" alt="" aria-hidden="true"
@@ -294,8 +321,6 @@
   </g>
 </svg>
 
-<div id="sky" aria-hidden="true"></div>
-
 <!-- ═══════════ APP ═══════════ -->
 <div class="app">
 
@@ -311,9 +336,9 @@
     <div class="tagline">Energia · Presenza · Connessione</div>
 
     <nav>
-      <button class="on" data-v="prova"><span class="n-ico">✧</span>Inizia gratis</button>
+      <button class="on" data-v="prova"><span class="n-ico">✿</span>Inizia gratis</button>
       <button data-v="flow"><span class="n-ico">☾</span>FLOW47</button>
-      <button data-v="eventi"><span class="n-ico">⟡</span>Eventi & Ritiri</button>
+      <button data-v="eventi"><span class="n-ico">✾</span>Eventi & Ritiri</button>
       <button data-v="privato"><span class="n-ico">☽</span>Lezioni private</button>
     </nav>
 
@@ -322,6 +347,7 @@
       <a href="https://wa.me/41792803563" target="_blank" rel="noopener">✆ WhatsApp</a>
     </div>
     <div class="side-foot"><span class="moon">☾</span> S☾MA — Ticino</div>
+    <button class="bg-toggle" id="bg-toggle" type="button">☾ Notte</button>
   </aside>
 
   <main>
@@ -331,11 +357,11 @@
       <div class="v-head">
         <h2>Inizia da qui</h2>
         <p>tre pratiche introduttive, in regalo</p>
-        <span class="divider">⋆ ☽ ✧ ☾ ⋆</span>
+        <span class="divider">❀ ☽ ✿ ☾ ❁</span>
       </div>
       <div class="cards">
         <a class="card" href="https://drive.google.com/file/d/11XxH605E-zevo6ExHCqxW4xqjnqNITaN/view" target="_blank" rel="noopener">
-          <div class="c-ico">✧</div><strong>Vinyasa</strong><small>Fluire con il respiro</small><span class="go">Guarda →</span>
+          <div class="c-ico">✿</div><strong>Vinyasa</strong><small>Fluire con il respiro</small><span class="go">Guarda →</span>
         </a>
         <a class="card" href="https://drive.google.com/file/d/13M1-tLSHjKQODE4HPUpbk075-R3q6hSS/view" target="_blank" rel="noopener">
           <div class="c-ico">☾</div><strong>Yin</strong><small>Rallentare e rilasciare</small><span class="go">Guarda →</span>
@@ -351,7 +377,7 @@
       <div class="v-head">
         <h2>FLOW47</h2>
         <p>47 giorni per fare della pratica un'abitudine</p>
-        <span class="divider">⋆ ☽ ✧ ☾ ⋆</span>
+        <span class="divider">❀ ☽ ✿ ☾ ❁</span>
       </div>
       <div class="flow-grid">
         <div class="flow-info">
@@ -385,17 +411,17 @@
       <div class="v-head">
         <h2>Eventi & Ritiri</h2>
         <p>vivere la pratica dal vivo</p>
-        <span class="divider">⋆ ☽ ✧ ☾ ⋆</span>
+        <span class="divider">❀ ☽ ✿ ☾ ❁</span>
       </div>
       <div class="cards">
         <div class="card" data-photo="retreat.jpg" data-title="Yoga Retreat · Ticino">
-          <div class="c-ico">⟡</div><strong>Yoga Retreat</strong><small>Val Lavizzara · 4–6 settembre</small><span class="go">Scopri →</span>
+          <div class="c-ico">❀</div><strong>Yoga Retreat</strong><small>Val Lavizzara · 4–6 settembre</small><span class="go">Scopri →</span>
         </div>
         <div class="card" data-form="tpl-yin" data-title="Yin & Sound Journey">
           <div class="c-ico">☾</div><strong>Yin & Sound</strong><small>Ascona · Valle del Silenzio · 45 CHF</small><span class="go">Iscriviti →</span>
         </div>
         <div class="card" data-form="tpl-pane" data-title="Workshop Yoga & Pane">
-          <div class="c-ico">✧</div><strong>Yoga & Pane</strong><small>Iragna · 16 agosto</small><span class="go">Iscriviti →</span>
+          <div class="c-ico">✾</div><strong>Yoga & Pane</strong><small>Iragna · 16 agosto</small><span class="go">Iscriviti →</span>
         </div>
       </div>
     </section>
@@ -405,7 +431,7 @@
       <div class="v-head">
         <h2>Su misura per te</h2>
         <p>lezioni individuali ed eventi privati</p>
-        <span class="divider">⋆ ☽ ✧ ☾ ⋆</span>
+        <span class="divider">❀ ☽ ✿ ☾ ❁</span>
       </div>
       <div class="cards">
         <div class="card" data-form="tpl-privato" data-title="Lezioni o eventi privati">
@@ -509,22 +535,40 @@
     });
   });
 
-  /* ── simboli celesti che cadono ── */
-  const GLYPHS = ['⋆','☾','☽','✧','⟡','✦','·'];
-  const COLORS = ['#6E93AD','#A7C8D6','#84AC98','#BFD9E1','#C9DCE0','#7FA0B4','#5E767C'];
-  const sky = document.getElementById('sky');
-  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
-    for(let i=0;i<30;i++){
-      const g = document.createElement('span');
-      g.className = 'glyph';
-      const size = 11 + Math.random()*17;
-      const fall = 13 + Math.random()*15;
-      const tw = 2.5 + Math.random()*3;
-      g.textContent = GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
-      g.style.cssText = `left:${Math.random()*100}%;font-size:${size}px;color:${COLORS[Math.floor(Math.random()*COLORS.length)]};`+
-        `animation-duration:${fall}s,${tw}s;animation-delay:${Math.random()*24}s,${(Math.random()*2).toFixed(1)}s;`;
-      sky.appendChild(g);
-    }
+  /* ── sfondo: alba ↔ notte (scelta ricordata) ── */
+  const bgBtn = document.getElementById('bg-toggle');
+  function setBg(mode){
+    document.body.dataset.bg = mode;
+    try{ localStorage.setItem('soma-bg', mode); }catch(e){}
+    bgBtn.textContent = mode==='alba' ? '☾ Notte' : '☼ Alba';
+  }
+  let saved = 'alba';
+  try{ saved = localStorage.getItem('soma-bg') || 'alba'; }catch(e){}
+  setBg(saved);
+  bgBtn.addEventListener('click', ()=> setBg(document.body.dataset.bg==='alba' ? 'notte' : 'alba'));
+
+  /* ── stelle cadenti, ogni tanto ── */
+  const motionOk = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function shootStar(){
+    const s = document.createElement('div');
+    s.className = 'shooting';
+    const x = 5 + Math.random()*65;      /* parte dall'alto, zona cielo */
+    const y = 3 + Math.random()*30;
+    const ang = 18 + Math.random()*22;   /* scende in diagonale */
+    const dist = 220 + Math.random()*320;
+    s.style.left = x+'vw';
+    s.style.top = y+'vh';
+    document.body.appendChild(s);
+    s.animate([
+      {transform:`rotate(${ang}deg) translateX(0)`, opacity:0},
+      {opacity:1, offset:.12},
+      {opacity:.9, offset:.75},
+      {transform:`rotate(${ang}deg) translateX(${dist}px)`, opacity:0}
+    ],{duration:1100+Math.random()*700, easing:'ease-out'}).onfinish = ()=> s.remove();
+  }
+  if(motionOk){
+    setTimeout(shootStar, 2500);                       /* la prima poco dopo l'arrivo */
+    setInterval(()=>{ if(Math.random() < .45) shootStar(); }, 5000);
   }
 
   /* ── modal ── */
